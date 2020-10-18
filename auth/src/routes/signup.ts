@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { body } from 'express-validator';
+import { Router, Request, Response } from 'express';
+import { body, validationResult } from 'express-validator';
 
 const router = Router();
 
@@ -12,8 +12,14 @@ router.post(
       .isLength({ min: 4, max: 20 })
       .withMessage('Password must be between 4 and 20 characters'),
   ],
-  (req, res) => {
-    res.send('Hello');
+  (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).send(errors.array());
+    }
+
+    const { email, password } = req.body;
+    res.send({});
   }
 );
 
