@@ -15,6 +15,12 @@ spec:
       containers:
         - name: auth
           image: indraniltiwary/auth
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
 ---
 apiVersion: v1
 kind: Service
@@ -24,7 +30,7 @@ spec:
   selector:
     app: auth
   ports:
-  - name: auth
-    protocol: TCP
-    port: 3000
-    targetPort: 3000
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
